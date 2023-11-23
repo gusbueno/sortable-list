@@ -19,7 +19,7 @@ type SortablePostsContenxtProps = {
     updateListOrder: (fromPosition: number, toPosition: number) => void;
     currentListOrder: Array<number>;
     actionsList: Array<Action>;
-    addAction: (action: Action) => void;
+    addAction: (action: Omit<Action, 'id'>) => void;
     removeAction: (actionId: string) => void;
 }
 

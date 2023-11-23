@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 
 import { useSortablePosts } from "../../hooks/useSortablePosts"
+import { PostItem } from "./components/PostItem"
 
 export const PostList = () => {
     const [isLoading, setIsLoading] = useState(true)
@@ -13,7 +14,6 @@ export const PostList = () => {
                 const response = await fetch('https://jsonplaceholder.typicode.com/posts')
                 const posts = await response.json()
 
-                console.log({ posts: posts.slice(0, 5) })
                 setInitialListOrder(posts.slice(0, 5))
                 setIsLoading(false)
             } catch (error) {
@@ -25,8 +25,28 @@ export const PostList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    console.log({ currentListOrder, isLoading })
     return (
-        <div>Sortable list</div>
+        <div>
+            <span className="text-lg text-white">Sortable Post List</span>
+            {isLoading ? (
+                <span>Loading...</span>
+            ) : (
+                <div className="flex flex-col mt-4 gap-4">
+                    {currentListOrder.map((postId, i) => {
+                        const isFirst = i === 0
+                        const isLast = i === currentListOrder.length - 1
+                        return (
+                            <PostItem
+                                key={postId}
+                                postId={postId}
+                                isFirst={isFirst}
+                                isLast={isLast}
+                                currentPosition={i}
+                            />
+                        )
+                    })}
+                </div>
+            )}
+        </div>
     )
 }
