@@ -21,6 +21,7 @@ type SortablePostsContenxtProps = {
     actionsList: Array<Action>;
     addAction: (action: Omit<Action, 'id'>) => void;
     removeAction: (actionId: string) => void;
+    handleTimeTravel: (actionId: string) => void;
 }
 
 type SortablePostsProviderProps = {
@@ -37,21 +38,28 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
         setCurrentListOrder(list.map((item) => item.id))
     }, [])
 
-    const updateListOrder = useCallback((postId: number, toPosition: number) => {
+    const calculateNewOrder = useCallback((postId: number, toPosition: number, list: Array<number>): Array<number> => {
         // get the post current position
-        const fromPosition = currentListOrder.indexOf(postId)
+        const fromPosition = list.indexOf(postId)
 
         if (fromPosition !== -1 && fromPosition !== toPosition) {
             // create a new list so that we don't mutate the current one
-            const newListOrder = [...currentListOrder]
+            const newListOrder = [...list]
             // remove the item from the old position
             const item = newListOrder.splice(fromPosition, 1)[0]
             // insert the item in the new position
             newListOrder.splice(toPosition, 0, item)
 
-            setCurrentListOrder(newListOrder)
+            return newListOrder
         }
-    }, [currentListOrder])
+
+        return list
+    }, [])
+
+    const updateListOrder = useCallback((postId: number, toPosition: number) => {
+        const newListOrder = calculateNewOrder(postId, toPosition, currentListOrder)
+        setCurrentListOrder(newListOrder)
+    }, [calculateNewOrder, currentListOrder])
 
     const addAction = useCallback((action: Omit<Action, 'id'>) => {
         const newAction = {
@@ -66,6 +74,21 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
         setActionsList((prevState) => prevState.filter((action) => action.id !== actionId))
     }, [])
 
+    const handleTimeTravel = useCallback((actionId: string) => {
+        const actionIndex = actionsList.findIndex((action) => action.id === actionId)
+
+        if (actionIndex !== -1) {
+            const actionsToExecute = actionsList.slice(actionIndex, actionsList.length)
+
+            let newListOrder: Array<number> = [...currentListOrder]
+            actionsToExecute.reverse().forEach((action) => {
+                newListOrder = [...calculateNewOrder(action.postId, action.prevPosition, newListOrder)]
+                removeAction(action.id)
+            })
+            setCurrentListOrder(newListOrder)
+        }
+    }, [actionsList, calculateNewOrder, currentListOrder, removeAction])
+
     return (
         <SortablePostsContext.Provider value={{
             setInitialListOrder,
@@ -74,6 +97,7 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
             actionsList,
             addAction,
             removeAction,
+            handleTimeTravel,
 
         }}>
             {children}

@@ -4,12 +4,11 @@ import { useSortablePosts } from "../../hooks/useSortablePosts"
 import type { Action } from "../../providers/SortablePostsProvider"
 
 export const ActionsList = () => {
-    const { actionsList, updateListOrder, removeAction } = useSortablePosts()
+    const { actionsList, handleTimeTravel } = useSortablePosts()
 
     const handleOnClickTimeTravel = useCallback((action: Action) => () => {
-        updateListOrder(action.postId, action.prevPosition)
-        removeAction(action.id)
-    }, [removeAction, updateListOrder])
+        handleTimeTravel(action.id)
+    }, [handleTimeTravel])
 
     return (
         <div>
@@ -18,7 +17,7 @@ export const ActionsList = () => {
                     <span className="text-lg text-slate-800">List of actions commited</span>
                 </div>
                 <div className="flex flex-col p-5 bg-slate-100">
-                    {actionsList.length ? actionsList.map((action) => (
+                    {actionsList.length ? [...actionsList].reverse().map((action) => (
                         <div key={action.id} className="flex justify-between items-center p-2 bg-white first:rounded-t last:rounded-b shadow-xl border-b last:border-b-0">
                             <span className="text-sm">
                                 Moved post {action.postId} from index {action.prevPosition} to index {action.currentPosition}
