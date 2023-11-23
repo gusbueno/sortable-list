@@ -38,7 +38,7 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
         setCurrentListOrder(list.map((item) => item.id))
     }, [])
 
-    const calculateNewOrder = useCallback((postId: number, toPosition: number, list: Array<number>): Array<number> => {
+    const calculateNewOrder = (postId: number, toPosition: number, list: Array<number>): Array<number> => {
         // get the post current position
         const fromPosition = list.indexOf(postId)
 
@@ -54,12 +54,12 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
         }
 
         return list
-    }, [])
+    }
 
     const updateListOrder = useCallback((postId: number, toPosition: number) => {
         const newListOrder = calculateNewOrder(postId, toPosition, currentListOrder)
         setCurrentListOrder(newListOrder)
-    }, [calculateNewOrder, currentListOrder])
+    }, [currentListOrder])
 
     const addAction = useCallback((action: Omit<Action, 'id'>) => {
         const newAction = {
@@ -87,7 +87,7 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
             })
             setCurrentListOrder(newListOrder)
         }
-    }, [actionsList, calculateNewOrder, currentListOrder, removeAction])
+    }, [actionsList, currentListOrder, removeAction])
 
     return (
         <SortablePostsContext.Provider value={{
