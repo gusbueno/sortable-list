@@ -25,6 +25,7 @@ export const PostList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    // TODO: improve loading state with pulse animation
     return (
         <div>
             <span className="text-lg text-white">Sortable Post List</span>

@@ -7,7 +7,7 @@ type Post = {
     body: string,
 }
 
-type Action = {
+export type Action = {
     id: string,
     postId: number,
     prevPosition: number,
@@ -37,15 +37,20 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
         setCurrentListOrder(list.map((item) => item.id))
     }, [])
 
-    const updateListOrder = useCallback((fromPosition: number, toPosition: number) => {
-        // create a new list so that we don't mutate the current one
-        const newListOrder = [...currentListOrder]
-        // remove the item from the old position
-        const item = newListOrder.splice(fromPosition, 1)[0]
-        // insert the item in the new position
-        newListOrder.splice(toPosition, 0, item)
+    const updateListOrder = useCallback((postId: number, toPosition: number) => {
+        // get the post current position
+        const fromPosition = currentListOrder.indexOf(postId)
 
-        setCurrentListOrder(newListOrder)
+        if (fromPosition !== -1 && fromPosition !== toPosition) {
+            // create a new list so that we don't mutate the current one
+            const newListOrder = [...currentListOrder]
+            // remove the item from the old position
+            const item = newListOrder.splice(fromPosition, 1)[0]
+            // insert the item in the new position
+            newListOrder.splice(toPosition, 0, item)
+
+            setCurrentListOrder(newListOrder)
+        }
     }, [currentListOrder])
 
     const addAction = useCallback((action: Omit<Action, 'id'>) => {

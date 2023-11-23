@@ -15,12 +15,13 @@ export const PostItem = ({ postId, isFirst, isLast, currentPosition }: PostItemP
     const { updateListOrder, addAction } = useSortablePosts()
 
     const handleOnclick = useCallback((nextPosition: number) => () => {
-        updateListOrder(currentPosition, nextPosition)
+
         addAction({
             postId,
             prevPosition: currentPosition,
             currentPosition: nextPosition,
         })
+        updateListOrder(postId, nextPosition)
     }, [addAction, currentPosition, postId, updateListOrder])
 
     return (
