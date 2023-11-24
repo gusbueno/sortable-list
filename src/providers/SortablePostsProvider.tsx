@@ -67,7 +67,7 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
             ...action
         }
 
-        setActionsList((prevState) => [...prevState, newAction])
+        setActionsList((prevState) => [newAction, ...prevState])
     }, [])
 
     const removeAction = useCallback((actionId: string) => {
@@ -78,10 +78,10 @@ export const SortablePostsProvider = ({ children }: SortablePostsProviderProps) 
         const actionIndex = actionsList.findIndex((action) => action.id === actionId)
 
         if (actionIndex !== -1) {
-            const actionsToExecute = actionsList.slice(actionIndex, actionsList.length)
+            const actionsToExecute = actionsList.slice(0, actionIndex + 1)
 
             let newListOrder: Array<number> = [...currentListOrder]
-            actionsToExecute.reverse().forEach((action) => {
+            actionsToExecute.forEach((action) => {
                 newListOrder = [...calculateNewOrder(action.postId, action.prevPosition, newListOrder)]
                 removeAction(action.id)
             })

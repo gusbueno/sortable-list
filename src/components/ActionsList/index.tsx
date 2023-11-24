@@ -11,7 +11,7 @@ export const ActionsList = () => {
                     <span className="text-lg text-slate-800">List of actions commited</span>
                 </div>
                 <div className="flex flex-col p-5 bg-slate-50">
-                    {actionsList.length ? [...actionsList].reverse().map((action) => (
+                    {actionsList.length ? actionsList.map((action) => (
                         <ActionItem
                             key={action.id}
                             actionId={action.id}
@@ -19,8 +19,7 @@ export const ActionsList = () => {
                             prevPosition={action.prevPosition}
                             currentPosition={action.currentPosition}
                         />
-                    )
-                    ) : (
+                    )) : (
                         <span className="text-md">No actions commited yet</span>
                     )}
                 </div>
