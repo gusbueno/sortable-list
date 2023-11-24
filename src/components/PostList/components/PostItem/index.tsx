@@ -25,21 +25,23 @@ export const PostItem = ({ postId, isFirst, isLast, currentPosition }: PostItemP
     }, [addAction, currentPosition, postId, updateListOrder])
 
     return (
-        <div className="flex justify-between items-center p-2 bg-white rounded w-[300px] h-16">
+        <div className="flex justify-between items-center p-2 bg-white rounded w-[300px] h-16 shadow-xl border" data-testid="postlist_postitem">
             <span>Post {postId}</span>
 
             <div className={twMerge("flex flex-col h-full justify-between", (isFirst || isLast) && "justify-center")}>
                 {!isFirst && (
                     <ChevronUpIcon
-                        className="w-3 h-3 text-black hover:cursor-pointer"
+                        className="w-3 h-3 text-black hover:cursor-pointer hover:animate-bounce"
                         onClick={handleOnclick(currentPosition - 1)}
+                        data-testid="postitem_chevronup"
                     />
                 )}
 
                 {!isLast && (
                     <ChevronDownIcon
-                        className="w-3 h-3 text-black hover:cursor-pointer"
+                        className="w-3 h-3 text-black hover:cursor-pointer hover:animate-bounce"
                         onClick={handleOnclick(currentPosition + 1)}
+                        data-testid="postitem_chevrondown"
                     />
                 )}
 

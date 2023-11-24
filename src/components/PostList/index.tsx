@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 
 import { useSortablePosts } from "../../hooks/useSortablePosts"
 import { PostItem } from "./components/PostItem"
+import { LoadingState } from "./components/LoadingState"
 
 export const PostList = () => {
     const [isLoading, setIsLoading] = useState(true)
@@ -25,12 +26,11 @@ export const PostList = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    // TODO: improve loading state with pulse animation
     return (
-        <div>
+        <div data-testid="postlist">
             <span className="text-lg text-white">Sortable Post List</span>
             {isLoading ? (
-                <span>Loading...</span>
+                <LoadingState />
             ) : (
                 <div className="flex flex-col mt-4 gap-4">
                     {currentListOrder.map((postId, i) => {

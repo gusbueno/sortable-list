@@ -12,7 +12,7 @@ export const ActionsList = () => {
 
     return (
         <div>
-            <div className="rounded overflow-hidden w-[400px]">
+            <div className="rounded overflow-hidden w-[400px] shadow-xl border">
                 <div className="flex p-5 bg-white">
                     <span className="text-lg text-slate-800">List of actions commited</span>
                 </div>
@@ -24,7 +24,7 @@ export const ActionsList = () => {
                             </span>
                             <button
                                 onClick={handleOnClickTimeTravel(action)}
-                                className="px-3 py-2 rounded bg-green-300 text-black text-sm hover:cursor-pointer"
+                                className="px-3 py-2 rounded bg-green-300 text-black text-sm hover:cursor-pointer hover:bg-green-400"
                             >
                                 Time travel
                             </button>
