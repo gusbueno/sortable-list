@@ -5,7 +5,7 @@ export const ActionsList = () => {
     const { actionsList } = useSortablePosts()
 
     return (
-        <div>
+        <div data-testid="actionslist">
             <div className="rounded overflow-hidden w-[400px] shadow-xl border">
                 <div className="flex p-5 bg-white">
                     <span className="text-lg text-slate-800">List of actions commited</span>

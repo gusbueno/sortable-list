@@ -24,6 +24,7 @@ export const ActionItem = ({ actionId, postId, prevPosition, currentPosition }: 
             <button
                 onClick={handleOnClickTimeTravel}
                 className="px-3 py-2 rounded bg-green-300 text-black text-sm hover:cursor-pointer hover:bg-green-400"
+
             >
                 Time travel
             </button>
